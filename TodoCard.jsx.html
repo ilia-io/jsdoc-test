@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: TodoCard.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: TodoCard.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  colors,
+  Grid,
+  Typography,
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import dayjs from 'dayjs';
+import React, { useState } from 'react';
+import TodoSwitch from './TodoSwitch';
+import TodoModal from './TodoModal';
+/**
+ * Компонент карточка задачи
+ * @namespace TodoCard
+ */
+const TodoCard = ({
+  todo,
+  title,
+  description,
+  expDate,
+  files,
+  setTitle,
+  setDescription,
+  setExpDate,
+  setFiles,
+  uploadFile,
+  deleteTodo,
+  editTodo,
+  toggleComplete,
+  setFilesUrl,
+  setTodoId,
+  uploadStatus,
+  setUploadStatus,
+}) => {
+  /**
+   * Стейт для модалки изменения задачи (внутри карточки)
+   * @memberof TodoCard
+   * @member openEditModal
+   */
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const handleCloseEditModal = () => setOpenEditModal(false);
+  /**
+   * Функция передает данные из карточки задачи в стейт
+   * и открывает модалку для изменения задачи
+   * @memberof TodoCard
+   */
+  const handleNewEdit = () => {
+    setTodoId(todo.id);
+    setTitle(todo.title);
+    setDescription(todo.description);
+    setExpDate(todo.expDate);
+    setFilesUrl(todo.filesUrl);
+    setUploadStatus(false);
+    setOpenEditModal(true);
+  };
+  return (
+    &lt;Grid item xs={12} sm={6} md={4}>
+      &lt;Card
+        sx={
+          todo.isCompleted === true
+            ? {
+                backgroundColor: colors.green[50],
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+              }
+            : {
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+              }
+        }
+      >
+        &lt;CardContent sx={{ flexGrow: 1 }}>
+          &lt;Typography gutterBottom variant="h4" component="h2">
+            {todo.title}
+          &lt;/Typography>
+          &lt;Box>
+            &lt;TodoSwitch todo={todo} toggleComplete={toggleComplete} />
+          &lt;/Box>
+          &lt;Typography
+            sx={
+              dayjs(todo.expDate).valueOf() &lt; dayjs().valueOf()
+                ? {
+                    backgroundColor: colors.red[100],
+                  }
+                : {}
+            }
+            variant="p"
+          >
+            Сделать до:{' '}
+            {todo.expDate &amp;&amp; todo.expDate.length &lt; 11
+              ? dayjs(todo.expDate)
+              : dayjs(todo.expDate).format('DD.MM.YYYY')}
+          &lt;/Typography>
+          &lt;Typography>{todo.description}&lt;/Typography>
+        &lt;/CardContent>
+        &lt;CardActions>
+          &lt;Button
+            size="small"
+            sx={{ m: 2 }}
+            startIcon={&lt;EditIcon />}
+            onClick={handleNewEdit}
+          >
+            Изменить
+          &lt;/Button>
+          &lt;TodoModal
+            openModal={openEditModal}
+            handleCloseModal={handleCloseEditModal}
+            btnName={'Изменить'}
+            handleAction={editTodo}
+            title={title}
+            description={description}
+            expDate={expDate}
+            files={files}
+            setTitle={setTitle}
+            setDescription={setDescription}
+            setExpDate={setExpDate}
+            setFiles={setFiles}
+            uploadFile={uploadFile}
+            uploadStatus={uploadStatus}
+            setUploadStatus={setUploadStatus}
+          >&lt;/TodoModal>
+          &lt;Button
+            onClick={() => deleteTodo(todo.id)}
+            size="small"
+            sx={{ m: 2 }}
+            startIcon={&lt;DeleteIcon />}
+          >
+            Удалить
+          &lt;/Button>
+        &lt;/CardActions>
+        &lt;Button
+          variant="contained"
+          size="small"
+          target={'_blank'}
+          href={todo.filesUrl}
+          disabled={todo.filesUrl ? false : true}
+        >
+          Смотреть файл
+        &lt;/Button>
+      &lt;/Card>
+    &lt;/Grid>
+  );
+};
+
+export default TodoCard;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="TodoApp.html">TodoApp</a></li><li><a href="TodoCard.html">TodoCard</a></li><li><a href="TodoDatePicker.html">TodoDatePicker</a></li><li><a href="TodoModal.html">TodoModal</a></li><li><a href="TodoSwitch.html">TodoSwitch</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getId">getId</a></li><li><a href="global.html#now">now</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Thu Dec 08 2022 19:00:16 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
